@@ -14,7 +14,7 @@ export const selectDevicesList = createSelector(selectEntities, selectIds, (enti
 export const selectDeviceById = (deviceId: string) =>
   createSelector(selectEntities, (entities) => entities[deviceId] ?? null);
 
-export const selectDevicesVm = createSelector(
+export const selectDevicesVM = createSelector(
   selectDevicesList,
   selectLoading,
   selectLoaded,

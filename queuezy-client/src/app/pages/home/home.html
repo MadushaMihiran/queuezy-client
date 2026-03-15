@@ -2,7 +2,8 @@
   <span class="font-semibold">Queuezy Dashboard</span>
 </mat-toolbar>
 
-<div class="mx-auto max-w-7xl p-4 sm:p-6" *ngIf="vm$ | async as vm">
+<div class="mx-auto max-w-7xl p-4 sm:p-6">
+  @if ($devices(); as vm) {
   <div class="mb-6">
     <h1 class="text-2xl font-bold text-slate-900 sm:text-3xl">Devices</h1>
     <p class="mt-1 text-sm text-slate-600">
@@ -80,4 +81,5 @@
       </mat-card>
     }
   </div>
+  }
 </div>

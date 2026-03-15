@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { AsyncPipe, NgIf, DatePipe } from '@angular/common';
+import { Component, computed, OnInit, Signal } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -7,11 +7,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { DevicesActions } from '../../store/devices/devices.actions';
 import { Store } from '@ngrx/store';
-import { selectDevicesVm } from '../../store/devices/devices.selectors';
-import { combineLatest, map, Observable, timer } from 'rxjs';
+import { selectDevicesVM } from '../../store/devices/devices.selectors';
+import { timer } from 'rxjs';
 import { Device } from '../../models/device.model';
+import { toSignal } from '@angular/core/rxjs-interop';
 
-interface HomeVm {
+interface DeviceVM {
   devices: Device[];
   loading: boolean;
   loaded: boolean;
@@ -22,8 +23,6 @@ interface HomeVm {
 @Component({
   selector: 'app-home',
   imports: [
-    AsyncPipe,
-    NgIf,
     DatePipe,
     MatToolbarModule,
     MatCardModule,
@@ -35,15 +34,21 @@ interface HomeVm {
   styleUrl: './home.scss',
 })
 export class Home implements OnInit {
-  vm$!: Observable<HomeVm>;
+  private readonly minuteTick = toSignal(timer(0, 60_000), { initialValue: 0 });
+  readonly $devices!: Signal<DeviceVM>;
 
   constructor(private store: Store) {
-    this.vm$ = combineLatest([this.store.select(selectDevicesVm), timer(0, 60_000)]).pipe(
-      map(([vm]) => ({
-        ...vm,
+    const devicesVM = this.store.selectSignal(selectDevicesVM);
+
+    this.$devices = computed<DeviceVM>(() => {
+      // Recompute vm every minute so online/offline status updates without store changes.
+      this.minuteTick();
+
+      return {
+        ...devicesVM(),
         now: Date.now(),
-      })),
-    );
+      };
+    });
   }
 
   ngOnInit(): void {
