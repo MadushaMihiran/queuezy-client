@@ -6,6 +6,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { DevicesActions } from '../../store/devices/devices.actions';
+import { LocationsActions } from '../../store/locations/locations.actions';
 import { Store } from '@ngrx/store';
 import { selectDevicesVM } from '../../store/devices/devices.selectors';
 import { timer } from 'rxjs';
@@ -52,6 +53,7 @@ export class Home implements OnInit {
   }
 
   ngOnInit(): void {
+    this.store.dispatch(LocationsActions.loadLocations());
     this.store.dispatch(DevicesActions.loadDevices());
   }
 

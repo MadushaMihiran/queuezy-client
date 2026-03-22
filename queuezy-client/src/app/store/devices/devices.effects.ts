@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { DevicesService } from '../../services/devices';
+import { Devices } from '../../services/devices';
 import { DevicesActions } from './devices.actions';
 import { catchError, map, merge, mergeMap, Observable, of, tap } from 'rxjs';
 import { Action } from '@ngrx/store';
@@ -12,7 +12,7 @@ export class DevicesEffects {
 
   constructor(
     private actions$: Actions,
-    private devicesService: DevicesService,
+    private devicesService: Devices,
   ) {
     this.loadDevices$ = createEffect(() =>
       this.actions$.pipe(

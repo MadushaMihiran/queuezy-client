@@ -48,7 +48,7 @@ interface ApiHeartbeatUpdateEvent {
 @Injectable({
   providedIn: 'root',
 })
-export class DevicesService {
+export class Devices {
   private socket: Socket;
 
   constructor(private http: HttpClient) {
