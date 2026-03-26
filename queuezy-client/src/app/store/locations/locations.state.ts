@@ -2,7 +2,7 @@ import { Location } from '../../models/location.model';
 
 export interface LocationsState {
   entities: Record<string, Location>;
-  ids: string[];
+  ids: number[];
   loading: boolean;
   loaded: boolean;
   error: string | null;

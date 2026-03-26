@@ -9,8 +9,8 @@ import { reducers, metaReducers } from './reducers';
 import { provideEffects } from '@ngrx/effects';
 import { DevicesEffects } from './store/devices/devices.effects';
 import { LocationsEffects } from './store/locations/locations.effects';
+import { RoomsEffects } from './store/rooms/rooms.effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import { Locations } from './services/locations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,7 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideAnimationsAsync(),
     provideStore(reducers, { metaReducers }),
-    provideEffects([DevicesEffects, LocationsEffects]),
+    provideEffects([DevicesEffects, LocationsEffects, RoomsEffects]),
     provideStoreDevtools({ maxAge: 25 }),
   ],
 };

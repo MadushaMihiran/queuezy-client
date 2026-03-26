@@ -6,7 +6,7 @@ import { Location } from '../models/location.model';
 import { environment } from '../../environments/environment';
 
 interface ApiLocation {
-  id: string;
+  id: number;
   name: string;
   address_line1?: string | null;
   address_line2?: string | null;
