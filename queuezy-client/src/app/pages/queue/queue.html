@@ -25,7 +25,6 @@
 
   @if (vm.device) {
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-      @for (device of [vm.device]; track trackByDeviceId($index, device)) {
       <mat-card class="rounded-2xl shadow-sm">
         <mat-card-content class="p-4 sm:p-5">
           <div class="flex items-start justify-between gap-3">
@@ -49,7 +48,7 @@
               </div>
             </div>
 
-            @if (isOnline(device, vm.now)) {
+            @if (isOnline(vm.device, vm.now)) {
               <mat-chip class="!bg-emerald-100 !text-emerald-700">Online</mat-chip>
             } @else {
               <mat-chip class="!bg-slate-200 !text-slate-700">Offline</mat-chip>
@@ -59,7 +58,7 @@
           <div class="mt-5 rounded-2xl bg-slate-50 p-4 text-center">
             <div class="text-sm text-slate-500">Counter</div>
             <div class="mt-1 text-4xl font-bold tracking-tight text-slate-900">
-              {{ device.lastCounter ?? '-' }}
+              {{ vm.device.lastCounter ?? '-' }}
             </div>
           </div>
 
@@ -67,7 +66,7 @@
             <div class="rounded-xl bg-slate-50 p-3">
               <div class="text-slate-500">Last action</div>
               <div class="mt-1 font-medium text-slate-900">
-                {{ device.lastCounterAction || '-' }}
+                {{ vm.device.lastCounterAction || '-' }}
               </div>
             </div>
 
@@ -81,11 +80,43 @@
 
           <div class="mt-4 text-xs text-slate-500">
             Last heartbeat:
-            {{ device.lastHeartbeatAt ? (device.lastHeartbeatAt | date:'medium') : '-' }}
+            {{ vm.device.lastHeartbeatAt ? (vm.device.lastHeartbeatAt | date:'medium') : '-' }}
           </div>
         </mat-card-content>
       </mat-card>
-    }
+
+      <mat-card class="rounded-2xl shadow-sm xl:col-span-2">
+        <mat-card-content class="p-4 sm:p-5">
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 class="text-lg font-semibold text-slate-900">Queue Numbers</h2>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 text-xs font-semibold">
+              <span class="rounded-full bg-emerald-100 px-3 py-1 text-emerald-700">
+                Done: {{ $doneCount() }}
+              </span>
+              <span class="rounded-full bg-amber-100 px-3 py-1 text-amber-700">
+                Not done: {{ $notDoneCount() }}
+              </span>
+            </div>
+          </div>
+
+          <div class="queue-circles mt-4">
+            @for (item of $queueNumbers(); track trackByQueueNumber($index, item)) {
+              <div
+                class="queue-circle"
+                [class.queue-circle--done]="item.done"
+                [class.queue-circle--pending]="!item.done"
+                [class.queue-circle--current]="vm.device.lastCounter === item.number"
+              >
+                <span class="queue-circle__number">{{ item.number }}</span>
+              </div>
+            }
+          </div>
+        </mat-card-content>
+      </mat-card>
+    
     </div>
   }
   }

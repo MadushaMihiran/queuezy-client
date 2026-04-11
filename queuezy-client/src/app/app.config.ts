@@ -10,6 +10,7 @@ import { provideEffects } from '@ngrx/effects';
 import { DevicesEffects } from './store/devices/devices.effects';
 import { LocationsEffects } from './store/locations/locations.effects';
 import { RoomsEffects } from './store/rooms/rooms.effects';
+import { EventsEffects } from './store/events/events.effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 export const appConfig: ApplicationConfig = {
@@ -19,7 +20,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideAnimationsAsync(),
     provideStore(reducers, { metaReducers }),
-    provideEffects([DevicesEffects, LocationsEffects, RoomsEffects]),
+    provideEffects([DevicesEffects, LocationsEffects, RoomsEffects, EventsEffects]),
     provideStoreDevtools({ maxAge: 25 }),
   ],
 };
